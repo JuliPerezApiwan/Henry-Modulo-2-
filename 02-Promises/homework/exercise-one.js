@@ -44,13 +44,14 @@ function problemA () {
    */
 
   // callback version
-  readFile('poem-one/stanza-01.txt', function (err, stanza) {
-    console.log('-- A. callback version --');
-    blue(stanza);
-  });
+  // readFile('poem-one/stanza-01.txt', function (err, stanza) {
+  //   console.log('-- A. callback version --');
+  //   blue(stanza);
+  // });
 
   // promise version
-  // ???
+  promisifiedReadFile("poem-one/stanza-01.txt")
+  .then((stanza) => blue(stanza))
 
 }
 
@@ -73,8 +74,11 @@ function problemB () {
   });
 
   // promise version
-  // ???
+  promisifiedReadFile("poem-one/stanza-02.txt") 
+  .then((stanza) => blue(stanza)) 
 
+  promisifiedReadFile("poem-one/stanza-03.txt") 
+  .then((stanza) => blue(stanza)) 
 }
 
 function problemC () {
@@ -100,7 +104,15 @@ function problemC () {
   });
 
   // promise version (hint: don't need to nest `then` calls)
-  // ???
+  promisifiedReadFile("poem-one/stanza-02.txt")
+  .then((stanza) => {
+    blue(stanza) 
+    return promisifiedReadFile('poem-one/stanza-03.txt') 
+  })
+    .then((stanza3) => {
+    blue(stanza3)
+    console.log("done")
+  })
 
 }
 
@@ -119,7 +131,9 @@ function problemD () {
   });
 
   // promise version
-  // ???
+  promisifiedReadFile("poem-one/wrong-file-name.txt")
+  .then((stanza) => blue(stanza))
+  .catch((err) => magenta(err))
 
 }
 
@@ -145,7 +159,19 @@ function problemE () {
   });
 
   // promise version
-  // ???
+  promisifiedReadFile('poem-one/stanza-03.txt')
+  .then((stanza3) => {
+    blue(stanza3)
+    return promisifiedReadFile("poem-one/wrong-file-name.txt")
+  })
+  .then((stanza4) => { 
+    blue(stanza4)
+  })
+
+  .catch((err) => magenta(err))
+
+
+  
 
 }
 
@@ -176,6 +202,14 @@ function problemF () {
   });
 
   // promise version
-  // ???
-
+  promisifiedReadFile('poem-one/stanza-03.txt')
+  .then((stanza3) => {
+    blue(stanza3)
+    return promisifiedReadFile('poem-one/wrong-file-name.txt')
+  })
+.then((stanza4) => {
+  blue(stanza4)
+})
+.catch((err) => magenta(err))
+.finally(() => console.log("done"));
 }

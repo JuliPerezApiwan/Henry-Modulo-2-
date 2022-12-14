@@ -50,8 +50,15 @@ function problemA () {
   );
 
   // promise version
-  // ???
-
+  Promise.all([
+  promisifiedReadFile("poem-two/stanza-01.txt"),
+  promisifiedReadFile("poem-two/stanza-02.txt")
+  ])
+  .then((stanzas) => {
+    blue(stanzas[0]);
+    blue(stanzas[1]);
+    console.log("done")
+    })
 }
 
 function problemB () {
@@ -82,9 +89,14 @@ function problemB () {
     }
   );
 
-  // promise version
-  // ???
+  const promises = filenames.map((file) => promisifiedReadFile(file)) // transforma un array de numeros de archivos en un array de promesas
 
+  // promise version
+  //Promise.all(promisifiedReadFile(filenames = [1, 2, 3, 4, 5, 6, 7, 8]))
+  Promise.all(promises)
+  .then((stanzas) => { stanzas.forEach((stanzas) => blue(stanzas))
+  console.log("done")
+  })
 }
 
 function problemC () {
@@ -117,8 +129,48 @@ function problemC () {
   );
 
   // promise version
+  ​
+  const misPromesas = filenames.map((file) => promisifiedReadFile(file));
+​
+  // Promise.all(misPromesas).then((stanzas) => {
+  //   stanzas.forEach((stanza) => blue(stanza));
+  //   console.log("done");
+  // });
+​
+  // promise version
   // ???
-
+  // promisifiedReadFile(filenames[0])
+  //   .then((stanza1) => {
+  //     blue(stanza1);
+  //     return promisifiedReadFile(filenames[1]);
+  //   })
+  //   .then((stanza2) => {
+  //     blue(stanza2);
+  //     return promisifiedReadFile(filenames[2]);
+  //   })
+  //   .then((stanza3) => {
+  //     blue(stanza3);
+  //     return promisifiedReadFile(filenames[3]);
+  //   })
+  //   .then((stanza4) => {
+  //     blue(stanza4);
+  //     console.log("done");
+  //   });
+​
+  for (
+    let i = 1, promesa = promisifiedReadFile(filenames[0]);
+    i <= filenames.length;
+    i++
+  ) {
+    promesa = promesa.then((stanza) => {
+      blue(stanza);
+      if (i === filenames.length) {
+        console.log("done");
+      } else {
+        return promisifiedReadFile(filenames[i]);
+      }
+    });
+  }
 }
 
 function problemD () {
@@ -155,8 +207,26 @@ function problemD () {
   );
 
   // promise version
-  // ???
-
+  for (
+    let i = 1, promesa = promisifiedReadFile(filenames[0]);
+    i <= filenames.length;
+    i++
+  ) {
+    promesa = promesa.then((stanza) => {
+      blue(stanza);
+      if (i === filenames.length) {
+        console.log("done");
+      } else {
+        return promisifiedReadFile(filenames[i]);
+      }
+    });
+    if (i === filenames.length) {
+      promesa.catch((error) => {
+        magenta(new Error(error));
+        console.log("done");
+      });
+    }
+  }
 }
 
 function problemE () {
